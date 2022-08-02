@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <string.h>
 
-void init_shell(void);
+void init_shell();
 int main(int ac, char **av, char __attribute__((unused)) **env);
 
 

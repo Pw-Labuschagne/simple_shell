@@ -5,10 +5,10 @@
  * Return: Nothing
  */
 
-void init_shell(void)__attribute__((constructor));
+void init_shell()__attribute__((constructor));
 /*Used to start-up before the main function*/
 
-void init_shell(void)
+void init_shell()
 {
 	system("clear");
 	printf("Welcome to PW Labuschange &&");
