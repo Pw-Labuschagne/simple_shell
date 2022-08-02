@@ -1,56 +1,79 @@
 #include "main.h"
 
+/*Declaration of the constructor init_shell*/
+void init_shell(void)__attribute__((constructor));
+
 /**
- * init_shell - Used to welcome user to newly designed shell.
+ * init_shell - Startup of shell for new users
  * Return: Nothing
  */
-
-void init_shell()__attribute__((constructor));
-/*Used to start-up before the main function*/
-
-void init_shell()
+void init_shell(void)
 {
 	system("clear");
-	printf("Welcome to PW Labuschange &&");
-	printf(" Jacques Brophy's desgin of a simple shell\n");
-	printf("-------------------------------------");
-	printf("---------------------------------\n");
-	printf("BE WARNED: Use this shell at own risk!\n");
-	printf("-------------------------------------");
-	printf("---------------------------------\n");
-	sleep(3);
-	system("clear");
+	printf("#######################################################\n");
+	printf("Welcome to the SIMPLE SHELL\n");
+	printf("This is our own version of what a simple shell would be\n");
+	printf("#######################################################\n");
+	printf("Creators : PW Labuschagne && Jacques Brophy\n");
+	printf("#######################################################\n");
+	printf("		LET\'S START			\n");
+	printf("######################################################\n");
+	sleep(4);
 }
 
 /**
- * main - This is our version of a simple shell
- * @ac: number of arguments fed to shell
- * @av: String fed to program
- * @env: Enviroment
- * Return: Result of the command
+ * loop - The REPL loop for the shell
+ * Return: nothing;
  */
-
-int main(int ac, char **av, char __attribute__((unused))**env)
-/*Used to get the user input to shell*/
+void loop()
 {
+	static int first = 1;
 	char *buf;
-	size_t bufsize = 0;
+	size_t buffs = 0;
 
-	while (1)
+	if (first)
 	{
-	printf("($)");
-		if ((getline(&buf, &bufsize, stdin) == -1))
-		{
-			if (feof(stdin))
-			{
-				exit(EXIT_FAILURE);
-			}
-			else
-			{
-				perror("Readline");
-			}
-		}
+		system("clear");
+		first = 0;
 	}
+	else
+	{
+		printf("($)");
+	}
+
+	while(1)
+	{
+		printf("($)");
+		if  (getline(&buf, &buffs, stdin) == EOF && ferror(stdin))
+		{
+			perror("Readline error!");
+		}
+		if (feof(stdin))
+		{
+			printf("\n");
+			exit(0);
+		}
+
+		buf[strlen(buf) -1] = '\0';
+		eval_command(buf);
+
+	}
+
+
+}
+/**
+ * main - The basis of the shell system
+ * @argc: Ammount of commands fed to the shell
+ * @argv: The string commands fed to the shell
+ * Return: 0 on success
+ */
+int main(int argc, char **argv)
+{
+
+
+/*REPL loop*/
+	loop();
+
 
 
 return (0);
