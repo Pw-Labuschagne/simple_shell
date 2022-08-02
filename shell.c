@@ -1,64 +1,53 @@
-#include "header_shell.h"
+#include "main.h"
 
 /**
- * init_shell - Welcomes the user to our self created shell for a good user
- * experience
+ * init_shell - Used to welcome user to newly designed shell.
  * Return: Nothing
  */
 
-void init_start_shell() __attribute__((constructor));
+void init_shell(void)__attribute__((constructor)); /*Used to start-up before the main function*/
 
-void init_start_shell()
+void init_shell(void)
 {
-	int c;
 	system("clear");
-	printf("Welcome to PW Labuschagne & Jacques Brophy's Simple Shell\n\n\n");
-	printf("Be warned use this shell system with caution and at own risk\n");
 	
-	wait(&c);
+	printf("Welcome to PW Labuschange && Jacques Brophy's desgin of a simple shell\n");
+	printf("----------------------------------------------------------------------\n");
+	printf("BE WARNED: Use this shell at own risk!\n");
+	printf("----------------------------------------------------------------------\n");
 	sleep(3);
-
-
+	system("clear");
 }
 
 /**
- * the_loop - Loops for user input and execution
- * Returns: Nothing
+ * main - This is our version of a simple shell
+ * @argc: number of arguments fed to shell
+ * @argv: String fed to program
+ * @env: 
+ * Return: Result of the command
  */
 
-void the_loop(char **s)
+int main(int ac, char **av, char __attribute__((unused))**env) /*Used to get the user input to shell*/
 {
-char *buf;
-char **args = s;
-int status;
+	char *buf;
+	size_t bufsize = 0;
 
-do{
+	while(1)
+	{
 	printf("($)");
-	buf = read_line();
-	args = split_line(buf);
-	status = execute_line(args);
-
-	free(buf);
-	free(args);
-
-}while (status);
-
-}
-
-
-	
-/**
- * shell_input - It takes a user input
- * Return: 0 on success
- */
-
-int main(int __attribute__((unused)) argc, char **argv)
-{
-
-
-the_loop(argv);
+		if ((getline(&buf, &bufsize, stdin) == -1))
+		{
+			if (feof(stdin))
+			{
+				exit(EXIT_FAILURE);
+			}
+			else
+			{
+				perror("Readline");
+			}
+		}
+	}
 
 
 return (0);
 }
-
