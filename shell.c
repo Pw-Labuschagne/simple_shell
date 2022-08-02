@@ -5,25 +5,28 @@
  * Return: Nothing
  */
 
-void init_shell(void)__attribute__((constructor)); /*Used to start-up before the main function*/
+void init_shell(void)__attribute__((constructor));
+/*Used to start-up before the main function*/
 
 void init_shell(void)
 {
 	system("clear");
-	
-	printf("Welcome to PW Labuschange && Jacques Brophy's desgin of a simple shell\n");
-	printf("----------------------------------------------------------------------\n");
+	printf("Welcome to PW Labuschange &&");
+	printf(" Jacques Brophy's desgin of a simple shell\n");
+	printf("-------------------------------------");
+	printf("---------------------------------\n");
 	printf("BE WARNED: Use this shell at own risk!\n");
-	printf("----------------------------------------------------------------------\n");
+	printf("-------------------------------------");
+	printf("---------------------------------\n");
 	sleep(3);
 	system("clear");
 }
 
 /**
  * main - This is our version of a simple shell
- * @argc: number of arguments fed to shell
- * @argv: String fed to program
- * @env: 
+ * @ac: number of arguments fed to shell
+ * @av: String fed to program
+ * @env: Enviroment 
  * Return: Result of the command
  */
 
