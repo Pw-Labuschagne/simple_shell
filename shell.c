@@ -26,16 +26,17 @@ void init_shell(void)
  * main - This is our version of a simple shell
  * @ac: number of arguments fed to shell
  * @av: String fed to program
- * @env: Enviroment 
+ * @env: Enviroment
  * Return: Result of the command
  */
 
-int main(int ac, char **av, char __attribute__((unused))**env) /*Used to get the user input to shell*/
+int main(int ac, char **av, char __attribute__((unused))**env)
+/*Used to get the user input to shell*/
 {
 	char *buf;
 	size_t bufsize = 0;
 
-	while(1)
+	while (1)
 	{
 	printf("($)");
 		if ((getline(&buf, &bufsize, stdin) == -1))
