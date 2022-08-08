@@ -1,80 +1,145 @@
 #include "main.h"
 
-/*Declaration of the constructor init_shell*/
-void init_shell(void)__attribute__((constructor));
+pid_t shell_pgid;
+struct termios shell_tmodes;
+int terminal;
+int interactive;
+extern char **environ;
 
 /**
- * init_shell - Startup of shell for new users
+ * shell_welcome - Just used to welcome the user to the shell
+ * Return: Nothing
+ */
+void shell_welcome(void)
+{
+	printf("##########################################################\n");
+	printf("	Welome to our version of a Simple Shell\n");
+	printf("	Creators: PW Labuschagne && Jacques Brophy\n");
+	printf("##########################################################\n");
+	printf("	We hope you enjoy :D. Let's GO!\n");
+	printf("##########################################################\n");
+
+	sleep(3);
+	system("clear");
+}
+
+void print_cwd()
+{
+	char cwd[1024];
+
+	getcwd(cwd, sizeof(cwd));
+	printf("%s", cwd);
+}
+/**
+ * get_input - Used to get the user input
+ * @str: Input from the user
+ * Return: 
+ */
+int get_input(char* str)
+{
+	char* buf;
+	size_t buf_len = 0;
+
+	printf("($):");
+	getline(&buf,&buf_len, stdin);
+
+	if (strlen(buf) != 0)
+	{
+		strcpy(str, buf);
+		return (0);
+	}else if (feof(stdin))
+	{
+		perror("End of file detected!\n");
+		exit (1);
+	}else{
+		return (1);
+	}
+}
+
+/**
+ * init_shell - Used to initialize the shell
  * Return: Nothing
  */
 void init_shell(void)
 {
-	system("clear");
-	printf("#######################################################\n");
-	printf("Welcome to the SIMPLE SHELL\n");
-	printf("This is our own version of what a simple shell would be\n");
-	printf("#######################################################\n");
-	printf("Creators : PW Labuschagne && Jacques Brophy\n");
-	printf("#######################################################\n");
-	printf("		LET\'S START			\n");
-	printf("######################################################\n");
-	sleep(4);
-}
+	/*Are we currently running interactively?*/
+	terminal = STDIN_FILENO;
+	interactive = isatty (terminal);
+	shell_pgid = getpid();	
 
-/**
- * loop - The REPL loop for the shell
- * Return: nothing;
- */
-void loop()
-{
-	static int first = 1;
-	char *buf;
-	size_t buffs = 0;
-
-	if (first)
+	if (interactive)
 	{
-		system("clear");
-		first = 0;
-	}
-	else
-	{
-		printf("($)");
-	}
-
-	while(1)
-	{
-		printf("($)");
-		if  (getline(&buf, &buffs, stdin) == EOF && ferror(stdin))
+		/*We shall now attempt to loop until we are in the foreground*/
+		while (tcgetpgrp (terminal) != (shell_pgid = getpgrp()))
 		{
-			perror("Readline error!");
-		}
-		if (feof(stdin))
+			kill (shell_pgid, SIGTTIN);
+
+		/*Ignore interactive and job signals*/
+		signal (SIGINT, SIG_IGN);
+		signal (SIGQUIT, SIG_IGN);
+		signal (SIGTSTP, SIG_IGN);
+		signal (SIGTTIN, SIG_IGN);
+		signal (SIGTTOU, SIG_IGN);
+		signal (SIGCHLD, SIG_IGN);
+
+		/*Put ourselfs in our own process group*/
+		shell_pgid = getpid();
+
+		if (setpgid (shell_pgid, shell_pgid) < 0)
 		{
-			printf("\n");
-			exit(0);
+			perror("Error occured trying to put the shell in its own process group\n");
+			exit(1);
 		}
 
-		buf[strlen(buf) -1] = '\0';
-		eval_command(buf);
+		/*Attempt to grab control of the terminal*/
+		tcsetpgrp (terminal, shell_pgid);
 
+		/*Save the terminal default attributes for the shell*/
+		tcgetattr (terminal, &shell_tmodes);
+
+		/*Setting up the current direcory*/
+		/*cDirectory = (char*) calloc(1024, sizeof(char));*/
+		
+		}
+	}
+}
+
+
+
+
+/**
+ * main - The main of the shell. Used to call functions for shell
+ * @argc: Number of inputs
+ * @argv: String of inputs
+ * @envp: Null terminator
+ * Return: 0 On success, 1 on error
+ */
+int main(int argc, char **argv,char **envp)
+{
+	char input_str[MAX_LINE], *parsed_args[MAX_TOKEN];
+	char* args_pipe[MAX_TOKEN];
+	int execFlag = 0;
+
+      	environ = envp;
+
+	shell_welcome();
+	init_shell();
+		
+	while (1)
+	{
+		print_cwd();
+
+		if (get_input(input_str))
+			continue;
+		execFlag = parse_str(input_str, parsed_args, args_pipe);
+
+		if (execFlag == 1)
+			sys_commands(parsed_args);
+
+		if (execFlag == 2)
+			exec_pipe(parsed_args, args_pipe);
 	}
 
-
+	return (0);
 }
-/**
- * main - The basis of the shell system
- * @argc: Ammount of commands fed to the shell
- * @argv: The string commands fed to the shell
- * Return: 0 on success
- */
-int main(int argc, char **argv)
-{
 
-
-/*REPL loop*/
-	loop();
-
-
-
-return (0);
-}
