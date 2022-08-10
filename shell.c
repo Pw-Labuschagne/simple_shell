@@ -57,7 +57,7 @@ int get_input(char* str)
  * @envp: Null terminator
  * Return: 0 On success, 1 on error
  */
-int main(int argc, char **argv, char **envp)
+int main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv, char **envp)
 {
 	char str_in[MAXINPUT];
 
