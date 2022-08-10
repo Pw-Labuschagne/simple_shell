@@ -68,7 +68,7 @@ int main(int argc, char **argv, char **envp)
 	{
 		print_cwd();
 		get_input(str_in);
-		cmd_builtins;
-
+		cmd_builtins(str_in);
+	}
 return (0);
 }
