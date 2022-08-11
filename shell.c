@@ -35,7 +35,7 @@ int get_input(char* str)
 	size_t buf_len = 0;
 
 	printf("($):");
-	getline(&buf,&buf_len, stdin);
+	_getline(&buf,&buf_len, stdin);
 
 	if (strlen(buf) != 0)
 	{

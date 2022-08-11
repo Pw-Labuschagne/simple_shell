@@ -12,7 +12,7 @@ extern char **environ;
 #include <sys/wait.h>
 #include <string.h>
 
-
+int _getline();
 int main(int argc, char** argv, char** envp);
 int cmd_builtins(char* str);
 char** parse_line(char *str_in);
