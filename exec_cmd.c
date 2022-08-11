@@ -14,7 +14,7 @@ void exec_cmd(char **args, char **env)
 	if (cmd_compare(args) != 1)
 	{
 	pid_t child = fork();
-	
+
 	if (child < 0)
 	{
 		perror("Forking problem!");
@@ -26,7 +26,6 @@ void exec_cmd(char **args, char **env)
 		{
 			printf("Could not execute command!\n");
 			exit(0);
-		}
 	} else if (child > 0)
 	{
 		int status;

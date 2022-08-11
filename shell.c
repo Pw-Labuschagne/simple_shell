@@ -16,8 +16,11 @@ void shell_welcome(void)
 	sleep(3);
 	system("clear");
 }
-
-void print_cwd()
+/**
+ * print_cwd - Prints the working direcory
+ * Return: nothing
+ */
+void print_cwd(void)
 {
 	char cwd[1024];
 
@@ -27,9 +30,9 @@ void print_cwd()
 /**
  * get_input - Used to get the user input
  * @str: Input from the user
- * Return: 
+ * Return: 0 if succesful
  */
-int get_input(char* str)
+int get_input(char *str)
 {
 	char *buf;
 	size_t buflen = 0;
@@ -40,12 +43,13 @@ int get_input(char* str)
 	{
 		strcpy(str, buf);
 		return (0);
-	}else if (feof(stdin))
+	} else if (feof(stdin))
 	{
 		perror("End of file detected!");
 		SIGKILL;
-		exit (0);
-	}else{
+		exit(0);
+	} else
+	{
 		return (1);
 	}
 }
@@ -57,15 +61,16 @@ int get_input(char* str)
  * @envp: Null terminator
  * Return: 0 On success, 1 on error
  */
-int main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv, char **envp)
+int main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv
+		, char **envp)
 {
 	char str_in[MAXINPUT];
-	char **tokens = malloc(sizeof(char*));
+	char **tokens = malloc(sizeof(char *));
 	int inter = 1;
 
-      	environ = envp;
+	environ = envp;
 	shell_welcome();
-	
+
 
 	while (inter)
 	{
