@@ -31,11 +31,10 @@ void print_cwd()
  */
 int get_input(char* str)
 {
-	char* buf;
-	size_t buf_len = 0;
+	char *buf;
+	size_t buflen = 0;
 
-	printf("($):");
-	_getline(&buf,&buf_len, stdin);
+	getline(&buf, &buflen, stdin);
 
 	if (strlen(buf) != 0)
 	{
@@ -43,8 +42,9 @@ int get_input(char* str)
 		return (0);
 	}else if (feof(stdin))
 	{
-		perror("End of file detected!\n");
-		exit (1);
+		perror("End of file detected!");
+		SIGKILL;
+		exit (0);
 	}else{
 		return (1);
 	}
@@ -61,11 +61,10 @@ int main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv, 
 {
 	char str_in[MAXINPUT];
 	char **tokens = malloc(sizeof(char*));
-	int inter = 0;
+	int inter = 1;
 
       	environ = envp;
 	shell_welcome();
-
 	
 
 	while (inter)
@@ -74,7 +73,11 @@ int main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv, 
 		if (inter == 1)
 		{
 			print_cwd();
+			printf("($):");
+		}
 			get_input(str_in);
+
+			tokens = parse_line(str_in);
 
 			if (tokens[0] != NULL)
 			{
@@ -82,7 +85,6 @@ int main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv, 
 			}
 
 			free(tokens);
-		}
 	}
 return (0);
 }

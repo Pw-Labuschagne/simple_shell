@@ -14,20 +14,28 @@ void exec_cmd(char **args, char **env)
 	if (cmd_compare(args) != 1)
 	{
 	pid_t child = fork();
+	
+	if (child < 0)
+	{
+		perror("Forking problem!");
+	}
 
 	if (child == 0)
 	{
-		execve(args[0], args, env);
-		perror("Forking problem!\n");
-		exit(1);
-	}else if (child > 0)
+		if (execve(args[0], args, env) < 0)
+		{
+			printf("Could not execute command!\n");
+			exit(0);
+		}
+	} else if (child > 0)
 	{
 		int status;
 
-		do{
+		do {
 			waitpid(child, &status, WUNTRACED);
-		}while(!WIFEXITED(status) && !WIFSIGNALED(status));
-	}else{
+		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+	} else
+	{
 		perror("Can't execve!\n");
 	}
 }

@@ -6,29 +6,29 @@
  * Return: character pointer
  */
 
-char** parse_line(char *str_in)
+char **parse_line(char *str_in)
 {
 	int len = 0;
 	int max = 16;
-	char **tokens = malloc(max * sizeof(char*));
+	char **tokens = malloc(max * sizeof(char *));
 	char *delim = " \t\r\n";
 	char *token = strtok(str_in, delim);
 
 	while (token != NULL)
 	{
 		tokens[len] = token;
-		len ++;
+		len++;
 
 		if (len >= max)
 		{
 			max = (int)(max * 1.5);
-			tokens = realloc(tokens, max * sizeof(char*));
+			tokens = realloc(tokens, max * sizeof(char *));
 		}
 
 		token = strtok(NULL, delim);
 	}
 
 	tokens[len] = NULL;
-	return tokens;
+	return (tokens);
 }
 
