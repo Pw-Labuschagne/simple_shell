@@ -60,24 +60,21 @@ int cmd_compare(char **args)
 		{
 			n_builtin = c + 1;
 			break;
+			switch (n_builtin)
+			{	case 1:
+					clear_me();
+					return (1);
+				case 2:
+		 			exit_me(args);
+					return (1);
+				case 3:
+					cd_something(args);
+					return (1);
+				default:
+					break;
+					
+			}
 		}
 	}
-
-	switch (n_builtin)
-	{
-	case 1:
-		clear_me();
-		return (1);
-	case 2:
-		exit_me(args);
-		return (1);
-	case 3:
-		cd_something(args);
-		return (1);
-	default:
-		break;
-
-	}
-
 	return (0);
 }

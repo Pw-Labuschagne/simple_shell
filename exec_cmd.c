@@ -37,5 +37,6 @@ void exec_cmd(char **args, char **env)
 	{
 		perror("Can't execve!\n");
 	}
-}
+	}
+	}
 }
