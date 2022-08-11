@@ -1,43 +1,84 @@
 #include "main.h"
 
 /**
- * cmd_builtins - used to check builtin commands
- * @str: Input string from main
- * Return: TBD
+ * cd_something - Used to cd
+ * @args: Input arguments 
+ * Return: Nothing
  */
 
-int cmd_builtins(char* str)
+void cd_something(char **args)
 {
-	char* builtins[3];
-	int num_built;
-	
-	builtins[0] = "exit";
-	builtins[1] = "clear";
-	builtins[2] = "cd";
-	/*builtins[3] = "env";*/
-
-	for (num_built = 0; num_built < 3; num_built++)
+	if (args[1] == NULL)
 	{
-		if (strcmp(str, builtins[num_built]) == 10)
+		fprintf(stderr, "cd: Missing cd argument!\n");
+	}else{
+		if (chdir(args[1]) != 0)
 		{
-			num_built++;
-			switch(num_built)
-			{
-				case 1:
-					printf("Thanks for using our shell. Goodbye\n");
-					exit (0);
-				case 2:
-					system("clear");
-					return (1);
-				case 3:
-					printf("Still working on the cd command!\n");
-					/*chdir(str[1]);*/
-					return (1);
-				default:
-					break;
-			}
+			perror("./hsh: cd!");
 		}
 	}
+}
 
+
+/**
+ * exit_me - Used to exit if entered by user
+ * @args: Input arguments
+ * Return: nothing
+ */
+void exit_me(char __attribute__((unused)) **args)
+{
+	exit(0);
+}
+
+/**
+ * clear_me - Used to clear the screen
+ * @args: input arguments
+ * Return: nothing
+ */
+void clear_me()
+{
+	system("clear");
+}
+
+/**
+ * cmd_compare - Used to determine if it is builin func or not
+ * @args - Input string
+ * Return: 0 if not 1 if is
+ */
+int cmd_compare(char **args)
+{
+	char *builtins[3];
+	int n_builtin = 3;
+	int c;
+
+	builtins[0] = "clear";
+	builtins[1] = "exit";
+	builtins[2] = "cd";
+	
+	for (c = 0; c < n_builtin; c++)
+	{
+		if (strcmp(args[0], builtins[c]) == 10)
+		{
+			n_builtin++;
+			break;
+		}
+		exit(0);
+	}
+
+	switch(n_builtin){
+		case 1:
+			clear_me();
+			return (1);
+		case 2:
+			exit_me(args);
+			return (1);
+		case 3:
+			cd_something(args);
+			return (1);
+		default:
+			break;
+
+	}
+	
 	return (0);
 }

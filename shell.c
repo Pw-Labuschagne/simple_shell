@@ -60,15 +60,29 @@ int get_input(char* str)
 int main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv, char **envp)
 {
 	char str_in[MAXINPUT];
+	char **tokens = malloc(sizeof(char*));
+	int inter = 0;
 
       	environ = envp;
 	shell_welcome();
 
-	while (1)
+	
+
+	while (inter)
 	{
-		print_cwd();
-		get_input(str_in);
-		cmd_builtins(str_in);
+		inter = isatty(STDIN_FILENO);
+		if (inter == 1)
+		{
+			print_cwd();
+			get_input(str_in);
+
+			if (tokens[0] != NULL)
+			{
+				exec_cmd(tokens, environ);
+			}
+
+			free(tokens);
+		}
 	}
 return (0);
 }
