@@ -10,8 +10,7 @@
 void exec_cmd(char **args, char **env)
 {
 
-
-	if (cmd_compare(args) != 1)
+	if (!cmd_compare(args))
 	{
 	pid_t child = fork();
 
@@ -22,7 +21,7 @@ void exec_cmd(char **args, char **env)
 
 	if (child == 0)
 	{
-		if (execve(args[0], args, env) < 0)
+		if (execve(args[0], args, env) == -1)
 		{
 			printf("Could not execute command!\n");
 			exit(0);

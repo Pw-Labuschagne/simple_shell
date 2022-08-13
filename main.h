@@ -14,13 +14,12 @@ extern char **environ;
 
 int _getline(void);
 int main(int argc, char **argv, char **envp);
-int cmd_builtins(char *str);
 char **parse_line(char *str_in);
 void exec_cmd(char **args, char **env);
 void cd_something(char **args);
 void clear_me(void);
 void exit_me(char **args);
 int cmd_compare(char **args);
-
+int print_env(char **env);
 
 #endif

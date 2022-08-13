@@ -67,6 +67,7 @@ int main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv
 	char str_in[MAXINPUT];
 	char **tokens = malloc(sizeof(char *));
 	int inter = 1;
+	/*int c;*/
 
 	environ = envp;
 	shell_welcome();
@@ -81,9 +82,15 @@ int main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv
 			printf("($):");
 		}
 			get_input(str_in);
-
+			if (strcmp("env", str_in) == -10)
+			{
+				if (strlen(str_in) == 4)
+				{
+					print_env(environ);
+					continue;
+				}
+			}
 			tokens = parse_line(str_in);
-
 			if (tokens[0] != NULL)
 			{
 				exec_cmd(tokens, environ);
@@ -93,3 +100,22 @@ int main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv
 	}
 return (0);
 }
+/**
+ * print_env - used to print enviromental variables
+ * @env - Enviroment from main
+ * Return: 0 if succesful
+ */
+
+int print_env(char **env)
+{
+	int i = 0;
+
+	while (env[i] != NULL)
+	{
+		printf("%s\n", env[i]);
+		i++;
+	}
+	return (0);
+}
+
+

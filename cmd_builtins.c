@@ -28,6 +28,7 @@ void cd_something(char **args)
  */
 void exit_me(char __attribute__((unused)) **args)
 {
+	printf("Thank you for testing our shell\n");
 	exit(0);
 }
 
@@ -48,33 +49,35 @@ void clear_me(void)
 int cmd_compare(char **args)
 {
 	char *builtins[3];
-	int n_builtin = 0;
+	int n_builtin = 3;
 	int c;
+	int choose = 0;
 
 	builtins[0] = "clear";
 	builtins[1] = "exit";
 	builtins[2] = "cd";
+
 	for (c = 0; c < n_builtin; c++)
 	{
 		if (strcmp(args[0], builtins[c]) == 0)
 		{
-			n_builtin = c + 1;
+			choose = c + 1;
 			break;
-			switch (n_builtin)
-			{	case 1:
+		}
+	}
+		switch (choose)
+		{
+				case 1:
 					clear_me();
 					return (1);
 				case 2:
-		 			exit_me(args);
+					exit_me(args);
 					return (1);
 				case 3:
 					cd_something(args);
 					return (1);
 				default:
 					break;
-					
-			}
 		}
-	}
-	return (0);
+return (0);
 }
