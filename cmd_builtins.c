@@ -8,6 +8,8 @@
 
 void cd_something(char **args)
 {
+	char path[1024];
+
 	if (args[1] == NULL)
 	{
 		fprintf(stderr, "cd: Missing cd argument!\n");
@@ -18,6 +20,8 @@ void cd_something(char **args)
 			perror("./hsh: cd!");
 		}
 	}
+
+	getcwd(path, 1024);
 }
 
 
