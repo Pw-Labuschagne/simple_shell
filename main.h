@@ -18,7 +18,7 @@ char **parse_line(char *str_in);
 void exec_cmd(char **args, char **env);
 void cd_something(char **args);
 void clear_me(void);
-void exit_me(char **args);
+void exit_me(void);
 int cmd_compare(char **args);
 int print_env(char **env);
 

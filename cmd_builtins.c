@@ -26,7 +26,7 @@ void cd_something(char **args)
  * @args: Input arguments
  * Return: nothing
  */
-void exit_me(char __attribute__((unused)) **args)
+void exit_me(void)
 {
 	printf("Thank you for testing our shell\n");
 	exit(0);
@@ -71,7 +71,7 @@ int cmd_compare(char **args)
 					clear_me();
 					return (1);
 				case 2:
-					exit_me(args);
+					exit_me();
 					return (1);
 				case 3:
 					cd_something(args);
