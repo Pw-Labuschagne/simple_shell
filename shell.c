@@ -61,8 +61,7 @@ int get_input(char *str)
  * @envp: Null terminator
  * Return: 0 On success, 1 on error
  */
-int main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv
-		, char **envp)
+int main(char **envp)
 {
 	char str_in[MAXINPUT];
 	char **tokens = malloc(sizeof(char *));
@@ -81,22 +80,10 @@ int main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv
 			print_cwd();
 			printf("($):");
 		}
-			get_input(str_in);
-			if (strcmp("env", str_in) == -10)
-			{
-				if (strlen(str_in) == 4)
-				{
-					print_env(environ);
-					continue;
-				}
-			}
-			tokens = parse_line(str_in);
-			if (tokens[0] != NULL)
-			{
-				exec_cmd(tokens, environ);
-			}
-
-			free(tokens);
+		get_input(str);
+		if (execve(/bin/, str, NULL))
+		{
+			perror("Error");
 	}
 return (0);
 }
